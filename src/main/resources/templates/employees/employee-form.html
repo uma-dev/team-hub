@@ -20,10 +20,13 @@
 
         <p class="h4 mb-4">Save Employee</p>
         <!-- When form is loaded the getter methods are called to see the initial labels
-            then, the setter methods are called to save data in Java object -->
+             or actual employee (update) then, the setter methods are called to save data
+             in Java object -->
         <form action="#" th:action="@{/employees/save}"
                          th:object="${employee}" method="POST"> 
-           
+            <!-- Add hidden form field to handle the update (it tell to app which employee
+                to update)-->
+            <input type="hidden" th:field="*{id}">
             <input type="text" th:field="*{firstName}"
                    class="form-control mb-4 w-25" placeholder="First name">
             <input type="text" th:field="*{lastName}"
