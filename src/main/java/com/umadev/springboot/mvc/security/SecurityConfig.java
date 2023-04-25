@@ -42,7 +42,7 @@ public class SecurityConfig {
                   
         http.authorizeHttpRequests( configurer -> 
             configurer
-            // anyRequest().authenticated() Adds support for CSS in Spring security
+            // anyRequest().authenticated() Adds suport for CSS in Spring security
                  .requestMatchers(HttpMethod.GET, "/hello").hasRole("EMPLOYEE").anyRequest().authenticated()
                  //.requestMatchers(HttpMethod.GET, "/api/employees").hasRole("EMPLOYEE")
                  //.requestMatchers(HttpMethod.GET, "/api/employees/**").hasRole("EMPLOYEE")
