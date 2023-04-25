@@ -38,11 +38,12 @@ public class SecurityConfig {
      }
  
      @Bean 
-     public SecurityFilterChain filterChain( HttpSecurity http) throws Exception { 
-         
-         http.authorizeHttpRequests( configurer -> 
-             configurer
-                 .requestMatchers(HttpMethod.GET, "/hello").hasRole("EMPLOYEE")
+    public SecurityFilterChain filterChain( HttpSecurity http) throws Exception { 
+                  
+        http.authorizeHttpRequests( configurer -> 
+            configurer
+            // anyRequest().authenticated() Adds support for CSS in Spring security
+                 .requestMatchers(HttpMethod.GET, "/hello").hasRole("EMPLOYEE").anyRequest().authenticated()
                  //.requestMatchers(HttpMethod.GET, "/api/employees").hasRole("EMPLOYEE")
                  //.requestMatchers(HttpMethod.GET, "/api/employees/**").hasRole("EMPLOYEE")
                  //.requestMatchers(HttpMethod.POST, "/api/employees").hasRole("MANAGER")
@@ -53,6 +54,7 @@ public class SecurityConfig {
                  //.requestMatchers(HttpMethod.PUT, "/api/employees/**").hasRole("MANAGER")
                  //.requestMatchers(HttpMethod.DELETE, "/api/employees/**").hasRole("ADMIN")
          );
+        
          // use HTTP basic authentication
          http.httpBasic();
  
