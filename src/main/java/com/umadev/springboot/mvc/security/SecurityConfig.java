@@ -44,7 +44,7 @@ public class SecurityConfig {
             configurer
             // anyRequest().authenticated() Adds suport for CSS in Spring security
                  .requestMatchers(HttpMethod.GET, "/hello").hasRole("EMPLOYEE").anyRequest().authenticated()
-                 //.requestMatchers(HttpMethod.GET, "/api/employees").hasRole("EMPLOYEE")
+                 //.requestMatchers(HttpMethod.GET, "/employees/list").hasRole("EMPLOYEE")
                  //.requestMatchers(HttpMethod.GET, "/api/employees/**").hasRole("EMPLOYEE")
                  //.requestMatchers(HttpMethod.POST, "/api/employees").hasRole("MANAGER")
                  // In case you are passing ID in JSON (service branch)
