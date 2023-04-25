@@ -2,9 +2,12 @@ package com.umadev.springboot.mvc.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.umadev.springboot.mvc.entity.Employee;
@@ -18,6 +21,7 @@ public class EmployeeController {
 
 	private EmployeeService employeeService;
 	
+	@Autowired //Optional since there is only one constructor
 	public EmployeeController( EmployeeService theEmployeeService){
 		employeeService = theEmployeeService;
 	}
@@ -31,6 +35,29 @@ public class EmployeeController {
 		// add to the spring model
 		theModel.addAttribute("employees", theEmployees);
 
-		return "list-employees"; 
+		return "employees/list-employees"; 
+	}
+
+	// add mapping for "/showFormForAdd"
+
+	@GetMapping("/showFormForAdd")
+	public String showFormForAdd (Model theModel) {
+
+		Employee  theEmployee = new Employee();
+		// add to the spring model, thymeleaf template will access this data 
+		// for binding data
+		theModel.addAttribute("employee", theEmployee);
+
+		return "employees/employee-form"; 
+	}
+
+	@PostMapping("/save")
+	public String saveEmployee(@ModelAttribute("employee") Employee theEmployee){
+		// Save the employee
+		employeeService.save(theEmployee);
+		
+		// Use redirect to prevent duplicate submissions
+		// Redirect to request mapping /employees/list
+		return  "redirect:/employees/list";
 	}
 }
