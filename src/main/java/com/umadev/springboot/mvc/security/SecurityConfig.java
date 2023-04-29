@@ -58,6 +58,7 @@ public class SecurityConfig {
                         // Need a controller
                         .loginPage("/showMyLoginPage")
                         // Login form should POST data to this URL for processing
+                        // Does not need a CONTROLLER
                         .loginProcessingUrl("/authenticateTheUser")
                         // Allow everyone to see the page
                         .permitAll());
