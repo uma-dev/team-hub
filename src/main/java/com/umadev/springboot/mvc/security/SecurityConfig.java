@@ -13,64 +13,46 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-    // Add support for JDBC, to not hardcode users. This code doesn't change with
-    // pwd encryption
-    @Bean
-    UserDetailsManager userDetailsManager(DataSource dataSource) {
+        // Add support for JDBC, to not hardcode users. This code doesn't change with
+        // pwd encryption
+        @Bean
+        UserDetailsManager userDetailsManager(DataSource dataSource) {
 
-        // Queries for using custom tables/schema
-        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
+                // Queries for using custom tables/schema
+                JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
 
-        // Define query to retrieve a user by username
-        jdbcUserDetailsManager.setUsersByUsernameQuery(
-                // Question mark is the parameter value from login
-                "select user_id, pw, active from members where user_id=?");
+                // Define query to retrieve a user by username
+                jdbcUserDetailsManager.setUsersByUsernameQuery(
+                                // Question mark is the parameter value from login
+                                "select user_id, pw, active from members where user_id=?");
 
-        // Define query to retrieve the authorities/roles
-        jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
-                // Question mark is the parameter value from login
-                "select user_id, role from roles where user_id=?");
+                // Define query to retrieve the authorities/roles
+                jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
+                                // Question mark is the parameter value from login
+                                "select user_id, role from roles where user_id=?");
 
-        return jdbcUserDetailsManager;
-    }
+                return jdbcUserDetailsManager;
+        }
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        @Bean
+        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http.authorizeHttpRequests(configurer -> configurer
-                .anyRequest().authenticated()
+                http.authorizeHttpRequests(configurer -> configurer
+                                .anyRequest().authenticated()
 
-        // .requestMatchers(HttpMethod.GET, "/employees/list").hasRole("EMPLOYEE")
-        // .requestMatchers(HttpMethod.GET,
-        // "/resources/**").permitAll().anyRequest().permitAll()
+                // .requestMatchers(HttpMethod.GET, "/employees/list").hasRole("EMPLOYEE")
 
-        // .requestMatchers(HttpMethod.GET, "/employees/list").hasRole("EMPLOYEE")
-        // .requestMatchers(HttpMethod.GET, "/api/employees/**").hasRole("EMPLOYEE")
-        // .requestMatchers(HttpMethod.POST, "/api/employees").hasRole("MANAGER")
-        // In case you are passing ID in JSON (service branch)
-        // .requestMatchers(HttpMethod.PUT, "/api/employees").hasRole("MANAGER")
+                )
+                                .formLogin(form -> form
+                                                // Need a controller
+                                                .loginPage("/showMyLoginPage")
+                                                // Login form should POST data to this URL for processing
+                                                // Does not need a controller
+                                                .loginProcessingUrl("/authenticateTheUser")
+                                                // Allow everyone to see the page
+                                                .permitAll());
 
-        // If passing ID by URL:
-        // .requestMatchers(HttpMethod.PUT, "/api/employees/**").hasRole("MANAGER")
-        // .requestMatchers(HttpMethod.DELETE, "/api/employees/**").hasRole("ADMIN")
-        )
-                .formLogin(form -> form
-                        // Need a controller
-                        .loginPage("/showMyLoginPage")
-                        // Login form should POST data to this URL for processing
-                        // Does not need a CONTROLLER
-                        .loginProcessingUrl("/authenticateTheUser")
-                        // Allow everyone to see the page
-                        .permitAll());
-
-        // use HTTP basic authentication
-        // http.httpBasic();
-
-        // Disable CSRF
-        // In general not required for stateless REST API that use POST, PUT, DELETE
-        // and/or PATCH
-        // http.csrf().disable();
-        return http.build();
-    }
+                return http.build();
+        }
 
 }
