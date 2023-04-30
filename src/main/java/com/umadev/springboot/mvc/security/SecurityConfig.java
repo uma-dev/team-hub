@@ -37,11 +37,8 @@ public class SecurityConfig {
         public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
                 http.authorizeHttpRequests(configurer -> configurer
-                                .anyRequest().authenticated()
-
-                // .requestMatchers(HttpMethod.GET, "/employees/list").hasRole("EMPLOYEE")
-
-                )
+                                // .requestMatchers(HttpMethod.GET, "/showMyLoginPage").permitAll()
+                                .anyRequest().authenticated())
                                 .formLogin(form -> form
                                                 // Need a controller
                                                 .loginPage("/showMyLoginPage")
