@@ -50,7 +50,11 @@ public class SecurityConfig {
                                                 // Does not need a controller
                                                 .loginProcessingUrl("/authenticateTheUser")
                                                 // Allow everyone to see the page
-                                                .permitAll());
+                                                .permitAll())
+
+                                .logout(logout -> logout.permitAll()
+
+                                );
 
                 return http.build();
         }

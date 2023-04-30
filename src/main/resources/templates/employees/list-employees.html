@@ -17,6 +17,7 @@
 <div class="container">
 
 	<h3>Employee Directory</h3>
+	<h5>Welcome to employee system</h5>
 	<hr>
 	<!-- Add button to add employee -->
 	<a th:href="@{/employees/showFormForAdd}" 
@@ -58,6 +59,12 @@
 		</tbody>		
 	</table>
 	
+
+	<!-- Add logout button -->
+	<form action="#" th:action="@{/logout}" method="POST">
+		<input class="btn btn-danger btn-sm" type="submit" value="Logout" />
+	</form>
+
 </div>
 	
 </body>
